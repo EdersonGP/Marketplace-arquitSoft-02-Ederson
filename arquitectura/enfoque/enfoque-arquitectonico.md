@@ -218,3 +218,37 @@ flowchart TB
     Storage --> Puertos
     Pagos --> Puertos
     Notificaciones --> Puertos
+
+## 9. Diagrama de referencia de Clean Architecture
+flowchart TB
+
+    subgraph PRESENTACION["PRESENTACIÓN"]
+        UI["Web / PWA"]
+        API["Controladores / API REST"]
+    end
+
+    subgraph APLICACION["APLICACIÓN"]
+        UC["Casos de Uso"]
+        PU["Puertos / Interfaces"]
+    end
+
+    subgraph DOMINIO["DOMINIO"]
+        ENT["Entidades"]
+        RN["Reglas de Negocio"]
+    end
+
+    subgraph INFRA["INFRAESTRUCTURA"]
+        DB["PostgreSQL / Supabase"]
+        ST["Storage"]
+        EXT["Servicios Externos"]
+    end
+
+    UI --> API
+    API --> UC
+    UC --> ENT
+    UC --> RN
+    UC --> PU
+
+    DB --> PU
+    ST --> PU
+    EXT --> PU

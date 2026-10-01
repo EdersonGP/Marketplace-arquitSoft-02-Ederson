@@ -17,7 +17,7 @@ Para el marketplace de productos para mascotas se han identificado los siguiente
 | DA-03 | El sistema debe proteger los datos de usuarios y operaciones de compra. | AC-04 Seguridad | Puede influir en mecanismos de autenticación, autorización y protección de datos. |
 | DA-04 | El sistema debe integrarse con una pasarela de pago externa mediante una API. | RC-04 Pasarela de pago | Condiciona la forma de comunicación e integración con servicios externos. |
 | DA-05 | El sistema debe utilizar una API REST para la comunicación entre frontend y backend. | RC-03 API REST | Limita las alternativas de comunicación entre las diferentes partes del sistema. |
-
+| DA06 | El sistema debe permitir modificar funcionalidades sin afectar innecesariamente otros módulos. | AC05-Mantenibilidad | Influye en la separación de responsabilidades modularidad y dependencias internas. |
 ---
 
 ## 3. Descripción de los drivers
