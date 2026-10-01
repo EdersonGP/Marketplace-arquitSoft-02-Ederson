@@ -4,17 +4,17 @@
 
 Para el Marketplace de productos para mascotas se utilizará **Clean Architecture (Arquitectura Limpia)** como enfoque arquitectónico interno.
 
-Este enfoque permitirá organizar las responsabilidades del sistema y controlar la dirección de las dependencias, manteniendo las reglas del negocio independientes de los detalles tecnológicos.
+Este enfoque permite organizar las responsabilidades del sistema y controlar la dirección de las dependencias, manteniendo las reglas del negocio independientes de los detalles tecnológicos.
 
 ## 2. Objetivo
 
-El objetivo es separar las responsabilidades del sistema y mantener el dominio del negocio como núcleo de la solución.
+El objetivo es separar las responsabilidades del sistema y mantener las reglas principales del negocio como núcleo de la solución.
 
 Las dependencias deberán dirigirse hacia las capas internas, evitando que el dominio dependa directamente de frameworks, bases de datos o servicios externos.
 
 ## 3. Problema que resuelve
 
-El Marketplace integra diferentes funcionalidades, entre ellas:
+El Marketplace integra diferentes funcionalidades:
 
 - Gestión de usuarios.
 - Gestión de productos.
@@ -23,7 +23,7 @@ El Marketplace integra diferentes funcionalidades, entre ellas:
 - Pedidos.
 - Pagos.
 
-Sin una adecuada separación de responsabilidades, estas funcionalidades podrían quedar fuertemente acopladas a la interfaz, base de datos o servicios externos.
+Sin una adecuada separación de responsabilidades, estas funcionalidades podrían quedar acopladas a la interfaz, base de datos o servicios externos.
 
 Clean Architecture permite reducir este acoplamiento mediante una separación clara de responsabilidades.
 
@@ -46,7 +46,7 @@ Ejemplos de reglas de negocio:
 - No permitir comprar una cantidad superior al stock disponible.
 - Un pedido debe contener productos válidos.
 - Un pedido no debe confirmarse si el pago no ha sido validado.
-- Los datos principales del negocio deben mantenerse independientes de la tecnología utilizada.
+- Las reglas principales del negocio deben mantenerse independientes de la tecnología.
 
 El dominio no deberá depender de frameworks ni tecnologías externas.
 
@@ -107,7 +107,7 @@ Aplicación
 Dominio
 ```
 
-La infraestructura podrá implementar las interfaces utilizadas por la aplicación y el dominio.
+La infraestructura implementará las interfaces necesarias para comunicarse con las capas internas.
 
 El dominio no deberá depender directamente de:
 
@@ -121,11 +121,11 @@ El dominio no deberá depender directamente de:
 
 Clean Architecture responde principalmente al:
 
-- **DA-06 – Mantenibilidad / evolución modular.**
+**DA-06 – Mantenibilidad / evolución modular**
 
-La separación de responsabilidades permite modificar determinados componentes sin afectar innecesariamente las reglas principales del negocio.
+El sistema debe permitir modificar funcionalidades sin afectar innecesariamente otros módulos.
 
-También contribuye indirectamente a los requisitos relacionados con seguridad y evolución del sistema al mantener separadas las responsabilidades.
+La separación de responsabilidades y el control de las dependencias contribuyen a cumplir este driver.
 
 ## 7. Beneficios
 
