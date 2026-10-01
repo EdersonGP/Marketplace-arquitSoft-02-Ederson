@@ -1,73 +1,54 @@
-# Enfoque Arquitectónico
+# Enfoque arquitectónico
 
 ## 1. Enfoque seleccionado
 
-Para la Plataforma Integral Multivendedor para la Gestión Comercial y Operativa de un Mercado de Abastos se utilizará **Clean Architecture (Arquitectura Limpia)** como enfoque arquitectónico interno.
+Para el Marketplace de productos para mascotas se utilizará **Clean Architecture (Arquitectura Limpia)** como enfoque arquitectónico interno.
 
-Clean Architecture permitirá organizar las responsabilidades del sistema de forma que las reglas de negocio permanezcan independientes de frameworks, interfaces de usuario, bases de datos y servicios externos.
-
----
+Este enfoque permitirá organizar las responsabilidades del sistema y controlar la dirección de las dependencias, manteniendo las reglas del negocio independientes de los detalles tecnológicos.
 
 ## 2. Objetivo
 
-Separar las responsabilidades y controlar la dirección de las dependencias del sistema, manteniendo el dominio del negocio como núcleo de la solución.
+El objetivo es separar las responsabilidades del sistema y mantener el dominio del negocio como núcleo de la solución.
 
-Las dependencias deberán apuntar hacia las capas internas.
-
----
+Las dependencias deberán dirigirse hacia las capas internas, evitando que el dominio dependa directamente de frameworks, bases de datos o servicios externos.
 
 ## 3. Problema que resuelve
 
-El sistema integra múltiples módulos, como:
+El Marketplace integra diferentes funcionalidades, entre ellas:
 
-- Usuarios
-- Comerciantes
-- Puestos
-- Productos
-- Inventario
-- Carrito multivendedor
-- Pedidos
-- Repartidores
-- Pagos
-- Delivery
-- Auditoría
-- Reportes
+- Gestión de usuarios.
+- Gestión de productos.
+- Catálogo.
+- Carrito de compras.
+- Pedidos.
+- Pagos.
 
-Sin una adecuada separación de responsabilidades, estos módulos podrían quedar fuertemente acoplados a tecnologías como Next.js, NestJS, PostgreSQL, Supabase o servicios externos.
+Sin una adecuada separación de responsabilidades, estas funcionalidades podrían quedar fuertemente acopladas a la interfaz, base de datos o servicios externos.
 
-Clean Architecture permite reducir este acoplamiento.
-
----
+Clean Architecture permite reducir este acoplamiento mediante una separación clara de responsabilidades.
 
 ## 4. Capas de Clean Architecture
 
 ### 4.1 Dominio
 
-Contiene las entidades, objetos de valor y reglas principales del negocio.
+Contiene las entidades y reglas principales del negocio.
 
 Ejemplos:
 
-- Usuario
-- Comerciante
-- Puesto
-- Producto
-- Inventario
-- Carrito
-- Pedido
-- Repartidor
-- Pago
-- Entrega
+- Usuario.
+- Producto.
+- Carrito.
+- Pedido.
+- Pago.
 
 Ejemplos de reglas de negocio:
 
-- No permitir confirmar cantidades superiores al stock disponible.
-- No permitir que dos clientes reserven simultáneamente al mismo repartidor.
-- Un pedido no debe continuar al proceso de compra si el pago no ha sido validado.
-- Un pedido no debe marcarse como entregado sin la confirmación correspondiente.
+- No permitir comprar una cantidad superior al stock disponible.
+- Un pedido debe contener productos válidos.
+- Un pedido no debe confirmarse si el pago no ha sido validado.
+- Los datos principales del negocio deben mantenerse independientes de la tecnología utilizada.
 
 El dominio no deberá depender de frameworks ni tecnologías externas.
-
----
 
 ### 4.2 Aplicación
 
@@ -75,21 +56,17 @@ Contiene los casos de uso que coordinan las operaciones del sistema.
 
 Ejemplos:
 
-- RegistrarUsuario
-- AutenticarUsuario
-- RegistrarProducto
-- ActualizarInventario
-- AgregarProductoAlCarrito
-- CrearPedido
-- SeleccionarRepartidor
-- ValidarPago
-- RegistrarCompra
-- ConfirmarEntrega
-- ConsultarReporte
+- RegistrarUsuario.
+- AutenticarUsuario.
+- RegistrarProducto.
+- ActualizarProducto.
+- ConsultarCatalogo.
+- AgregarProductoAlCarrito.
+- CrearPedido.
+- ValidarPago.
+- ConsultarPedido.
 
-Esta capa podrá definir interfaces o puertos necesarios para acceder a persistencia o servicios externos.
-
----
+Esta capa coordina las operaciones necesarias para ejecutar los casos de uso del sistema.
 
 ### 4.3 Infraestructura
 
@@ -97,158 +74,107 @@ Contiene las implementaciones concretas necesarias para interactuar con tecnolog
 
 Ejemplos:
 
-- Repositorios PostgreSQL
-- Supabase
-- Supabase Storage
-- Cloudflare R2
-- Servicios de notificaciones
-- Adaptadores de pagos
-- Persistencia de auditoría
-- Integraciones externas
+- Repositorios de datos.
+- Acceso a la base de datos.
+- Adaptador de la pasarela de pago.
+- Servicios externos.
 
-La infraestructura implementará las interfaces definidas por las capas internas.
-
----
+La infraestructura implementará las interfaces necesarias definidas por las capas internas.
 
 ### 4.4 Presentación
 
-Responsable de la interacción con los usuarios y de recibir las solicitudes.
+Es responsable de recibir las solicitudes de los usuarios y presentar los resultados.
 
-Tecnologías:
+Incluye:
 
-- Next.js
-- TypeScript
-- Aplicación Web/PWA
-- API REST
+- Interfaz web.
+- Controladores.
+- API REST.
 
-Interfaces principales:
-
-- Marketplace
-- Catálogo
-- Carrito
-- Seguimiento de pedidos
-- Panel del comerciante
-- Panel del repartidor
-- Panel del administrador
-
-La presentación enviará las solicitudes a los casos de uso de la capa de aplicación.
-
----
+La presentación enviará las solicitudes hacia los casos de uso de la capa de aplicación.
 
 ## 5. Regla de dependencias
 
-Las dependencias deberán dirigirse hacia el núcleo del sistema.
+Las dependencias deberán dirigirse hacia las capas internas.
 
 La relación general será:
 
-Presentación → Aplicación → Dominio
+```text
+Presentación
+      ↓
+Aplicación
+      ↓
+Dominio
+```
 
-Infraestructura → Aplicación / Dominio
+La infraestructura podrá implementar las interfaces utilizadas por la aplicación y el dominio.
 
-El dominio no deberá depender de:
+El dominio no deberá depender directamente de:
 
-- Next.js
-- NestJS
-- PostgreSQL
-- Supabase
-- Cloudflare R2
-- Yape
-- Plin
-- servicios externos
+- Frameworks.
+- Base de datos.
+- Interfaz de usuario.
+- Pasarela de pago.
+- Servicios externos.
 
----
+## 6. Relación con los drivers arquitectónicos
 
-## 6. Beneficios
+Clean Architecture responde principalmente al:
+
+- **DA-06 – Mantenibilidad / evolución modular.**
+
+La separación de responsabilidades permite modificar determinados componentes sin afectar innecesariamente las reglas principales del negocio.
+
+También contribuye indirectamente a los requisitos relacionados con seguridad y evolución del sistema al mantener separadas las responsabilidades.
+
+## 7. Beneficios
 
 - Facilita el mantenimiento del sistema.
-- Reduce el acoplamiento entre módulos.
-- Permite realizar pruebas unitarias sobre las reglas de negocio.
-- Facilita cambiar tecnologías externas.
-- Mejora la separación de responsabilidades.
-- Permite evolucionar el sistema de manera modular.
-- Mantiene las reglas principales del negocio independientes de frameworks.
+- Reduce el acoplamiento entre componentes.
+- Separa las reglas del negocio de las tecnologías externas.
+- Facilita las pruebas de las reglas de negocio.
+- Permite sustituir tecnologías externas con menor impacto.
+- Favorece la evolución modular del sistema.
 
----
-
-## 7. Relación con los Drivers Arquitectónicos
-
-Clean Architecture responde principalmente a:
-
-- DA06 - Mantenibilidad / evolución modular.
-- DA04 - Seguridad.
-- DA12 - Auditoría y trazabilidad.
-- DA14 - Evolución independiente de módulos.
-
-El driver principal es **DA06 - Mantenibilidad**, debido a que se requiere modificar funcionalidades sin afectar innecesariamente otros módulos.
-
-## 8. Diagrama del Enfoque Arquitectónico
+## 8. Diagrama del enfoque arquitectónico
 
 ```mermaid
 flowchart TB
 
     subgraph PRESENTACION["PRESENTACIÓN"]
-        Web["Web / PWA"]
+        UI["Interfaz Web"]
         API["API REST"]
     end
 
     subgraph APLICACION["APLICACIÓN"]
-        CasosUso["Casos de Uso"]
-        Puertos["Interfaces / Puertos"]
-    end
-
-    subgraph DOMINIO["DOMINIO"]
-        Entidades["Entidades"]
-        Reglas["Reglas de Negocio"]
-    end
-
-    subgraph INFRAESTRUCTURA["INFRAESTRUCTURA"]
-        PostgreSQL["PostgreSQL / Supabase"]
-        Storage["Supabase Storage / Cloudflare R2"]
-        Pagos["Adaptadores de Pago"]
-        Notificaciones["Servicios Externos"]
-    end
-
-    Web --> API
-    API --> CasosUso
-    CasosUso --> Entidades
-    CasosUso --> Reglas
-    CasosUso --> Puertos
-
-    PostgreSQL --> Puertos
-    Storage --> Puertos
-    Pagos --> Puertos
-    Notificaciones --> Puertos
-
-## 9. Diagrama de referencia de Clean Architecture
-flowchart TB
-
-    subgraph PRESENTACION["PRESENTACIÓN"]
-        UI["Web / PWA"]
-        API["Controladores / API REST"]
-    end
-
-    subgraph APLICACION["APLICACIÓN"]
         UC["Casos de Uso"]
-        PU["Puertos / Interfaces"]
+        INT["Interfaces"]
     end
 
     subgraph DOMINIO["DOMINIO"]
         ENT["Entidades"]
-        RN["Reglas de Negocio"]
+        REGLAS["Reglas de Negocio"]
     end
 
-    subgraph INFRA["INFRAESTRUCTURA"]
-        DB["PostgreSQL / Supabase"]
-        ST["Storage"]
+    subgraph INFRAESTRUCTURA["INFRAESTRUCTURA"]
+        DB["Base de Datos"]
+        PAGO["Pasarela de Pago"]
         EXT["Servicios Externos"]
     end
 
     UI --> API
     API --> UC
     UC --> ENT
-    UC --> RN
-    UC --> PU
+    UC --> REGLAS
+    UC --> INT
 
-    DB --> PU
-    ST --> PU
-    EXT --> PU
+    DB --> INT
+    PAGO --> INT
+    EXT --> INT
+```
+
+## 9. Resultado
+
+El Marketplace utilizará **Clean Architecture como enfoque arquitectónico interno**, manteniendo las reglas del negocio en el núcleo y separándolas de la presentación, persistencia y servicios externos.
+
+Este enfoque complementará el estilo de **Monolito Modular**, permitiendo organizar internamente cada módulo con responsabilidades claramente separadas.
